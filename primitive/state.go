@@ -10,6 +10,7 @@ type State struct {
 
 func NewState(worker *Worker, shape Shape, alpha int) *State {
 	var mutateAlpha bool
+	mutateAlpha = true
 	if alpha == 0 {
 		alpha = 128
 		mutateAlpha = true

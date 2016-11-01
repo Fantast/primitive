@@ -95,14 +95,15 @@ func (worker *Worker) RandomState(t ShapeType, a int) *State {
 	case ShapeTypeEllipse:
 		return NewState(worker, NewRandomEllipse(worker), a)
 	case ShapeTypeCircle:
-		rnd := worker.Rnd
-		tp := rnd.Intn(5)
-		if (tp < 4) {
-			return NewState(worker, NewRandomRotatedEllipse(worker, tp), a)
-		} else {
-			return NewState(worker, NewRandomCircle(worker), a)
-		}
-		return nil;
+		return NewState(worker, NewRandomCircle(worker), a)
+		//rnd := worker.Rnd
+		//tp := rnd.Intn(5)
+		//if (tp < 4) {
+		//	return NewState(worker, NewRandomRotatedEllipse(worker, tp), a)
+		//} else {
+		//	return NewState(worker, NewRandomCircle(worker), a)
+		//}
+		//return nil;
 	case ShapeTypeRotatedRectangle:
 		return NewState(worker, NewRandomRotatedRectangle(worker), a)
 	case ShapeTypeQuadratic:
