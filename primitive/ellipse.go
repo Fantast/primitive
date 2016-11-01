@@ -57,12 +57,12 @@ func (c *Ellipse) Mutate() {
 		c.X = clampInt(c.X+int(rnd.NormFloat64()*16), 0, w-1)
 		c.Y = clampInt(c.Y+int(rnd.NormFloat64()*16), 0, h-1)
 	case 1:
-		c.Rx = clampInt(c.Rx+int(rnd.NormFloat64()*16), 1, w-1)
+		c.Rx = clampInt(c.Rx+int(rnd.NormFloat64()*16), 1, 32)
 		if c.Circle {
 			c.Ry = c.Rx
 		}
 	case 2:
-		c.Ry = clampInt(c.Ry+int(rnd.NormFloat64()*16), 1, w-1)
+		c.Ry = clampInt(c.Ry+int(rnd.NormFloat64()*16), 1, 32)
 		if c.Circle {
 			c.Rx = c.Ry
 		}
@@ -106,13 +106,14 @@ type RotatedEllipse struct {
 	Angle  float64
 }
 
-func NewRandomRotatedEllipse(worker *Worker) *RotatedEllipse {
+func NewRandomRotatedEllipse(worker *Worker, tp int) *RotatedEllipse {
+	var rx, ry, a float64
 	rnd := worker.Rnd
 	x := rnd.Float64() * float64(worker.W)
 	y := rnd.Float64() * float64(worker.H)
-	rx := rnd.Float64()*32 + 1
-	ry := rnd.Float64()*32 + 1
-	a := rnd.Float64() * 360
+	ry = rnd.Float64()*32 + 1
+	rx = ry * 2.0
+	a = float64(tp * 45.0)
 	return &RotatedEllipse{worker, x, y, rx, ry, a}
 }
 
@@ -139,15 +140,13 @@ func (c *RotatedEllipse) Mutate() {
 	w := c.Worker.W
 	h := c.Worker.H
 	rnd := c.Worker.Rnd
-	switch rnd.Intn(3) {
+	switch rnd.Intn(2) {
 	case 0:
 		c.X = clamp(c.X+rnd.NormFloat64()*16, 0, float64(w-1))
 		c.Y = clamp(c.Y+rnd.NormFloat64()*16, 0, float64(h-1))
 	case 1:
-		c.Rx = clamp(c.Rx+rnd.NormFloat64()*16, 1, float64(w-1))
-		c.Ry = clamp(c.Ry+rnd.NormFloat64()*16, 1, float64(w-1))
-	case 2:
-		c.Angle = c.Angle + rnd.NormFloat64()*32
+		c.Ry = clamp(c.Ry+rnd.NormFloat64()*16, 1, 32)
+		c.Rx = c.Ry * 2
 	}
 }
 
